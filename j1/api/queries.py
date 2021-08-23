@@ -48,14 +48,14 @@ CREATE_ENTITY = """
 
 DELETE_ENTITY = """
   mutation DeleteEntity(
-    $entityId: String!,
+    $entityId: String!
     $timestamp: Long
     $hardDelete: Boolean
-    ) {
+  ) {
     deleteEntity(
-      entityId: $entityId,
+      entityId: $entityId
       timestamp: $timestamp
-      $hardDelete: $hardDelete
+      hardDelete: $hardDelete
     ) {
       entity {
         _id

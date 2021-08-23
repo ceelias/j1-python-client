@@ -63,17 +63,16 @@ class ApiClient(object):
     @retry(**RETRY_OPTS)
     def execute_query(self, url: str, query: str, variables: Dict = None) -> Dict:
         """ Executes query against graphql endpoint """
-        print('URL')
-        print(url)
-        print("HELO")
         data = {
             'query': query
         }
         if variables:
             data.update(variables=variables)
 
-        response = requests.post(url, headers=self.global_headers(), json=data)
+        print(data)
 
+        response = requests.post(url, headers=self.global_headers(), json=data)
+        print(response._content)
         # It is still unclear if all responses will have a status
         # code of 200 or if 429 will eventually be used to 
         # indicate rate limitting.  J1 devs are aware.

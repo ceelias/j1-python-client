@@ -40,13 +40,6 @@ class Entity(ApiClient):
 
     
     def update(self, entity_id: str = None, properties: Dict = None) -> Dict:
-        """
-        Update an existing entity.
-
-        args:
-            entity_id (str): The _id of the entity to udate
-            properties (dict): Dictionary of key/value entity properties
-        """
         variables = {
             'entityId': entity_id,
             'properties': properties
@@ -59,17 +52,18 @@ class Entity(ApiClient):
         return response['data']['updateEntity']
 
     def delete(self, entity_id: str = None, hard_delete: bool = True):
-        """ Deletes an entity from the graph.  Note this is a hard delete.
-
-        args:
-            entity_id (str): Entity ID for entity to delete
-        """
         variables = {
-            'entityId': entity_id
+            'entityId': entity_id,
+            'hardDelete': hard_delete
         }
         response = self.execute_query(
                     self.config.get_query_endpont(),
                     DELETE_ENTITY,
                     variables=variables
                     )
+        print("WOMBAT: ")
+        print(response)
         return response['data']['deleteEntity']
+
+    def upsert_raw_data(self):
+        return
