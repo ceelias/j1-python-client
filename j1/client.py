@@ -4,7 +4,6 @@ from j1.api.relationship import Relationship
 from j1.decorators import lazy_property
 
 class J1Client(object):
-    @lazy_property
     def entity(self):
         return Entity(self.config)
 

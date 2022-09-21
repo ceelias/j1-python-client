@@ -1,5 +1,5 @@
 from .api_client import ApiClient
-from typing import Dict, List
+from typing import List
 
 
 from j1.api.queries import(
@@ -11,7 +11,7 @@ from j1.constants import (
 )
     
 class Api(ApiClient):
-    def __init__(self, config, call_back=None):
+    def __init__(self, config):
         super(Api, self).__init__(config)
   
     def query_v1(self,
@@ -36,24 +36,26 @@ class Api(ApiClient):
                 'query': f"{query} SKIP {page * skip} LIMIT {limit}",
                 'includeDeleted': include_deleted
             }
-            response = self._execute_query(
-                self.config.get_query_endpont(),
+            response = ApiClient.execute_query(
+                self,
+                url=self.config.get_query_endpont(),
                 query=QUERY_V1,
                 variables=variables
             )
 
-            data = response['data']['queryV1']['data']
+            if response:
+                data = response['data']['queryV1']['data']
 
-            # If tree query then no pagination
-            if 'vertices' in data and 'edges' in data:
-                return data
+                # If tree query then no pagination
+                if 'vertices' in data and 'edges' in data:
+                    return data
 
-            if len(data) < J1QL_SKIP_COUNT:
+                if len(data) < J1QL_SKIP_COUNT:
+                    results.extend(data)
+                    break
+
                 results.extend(data)
-                break
-
-            results.extend(data)
-            page += 1
+                page += 1
 
         return {'data': results}
 

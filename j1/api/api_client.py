@@ -1,7 +1,6 @@
-
 import requests
 import json
-from typing import Dict, List
+from typing import Dict
 from retrying import retry
 
 from j1.exceptions.exceptions import (
@@ -42,7 +41,7 @@ class ApiClient(object):
             'LifeOmic-Account': self.config.account
         }
 
-    def __init__(self, config, call_back=None):
+    def __init__(self, config):
         self._config = config
 
     @property
@@ -61,7 +60,7 @@ class ApiClient(object):
                 raise ValueError("Required parameter {} cannot be None.".format(name))
 
     @retry(**RETRY_OPTS)
-    def execute_query(self, url: str, query: str, variables: Dict = None) -> Dict:
+    def execute_query(self, url: str, query: str, variables) -> Dict | None:
         """ Executes query against graphql endpoint """
         data = {
             'query': query
@@ -91,6 +90,5 @@ class ApiClient(object):
             raise J1ApiRetryError('JupiterOne API rate limit exceeded')
 
         else:
-            content = json.loads(response._content)
-            raise J1ApiError('{}:{}'.format(response.status_code, content.get('error')))
+            raise J1ApiError('{}:{}'.format(response.status_code, 'error executing query'))
 
