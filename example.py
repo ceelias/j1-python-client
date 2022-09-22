@@ -1,6 +1,6 @@
-import j1
+from j1.client import J1Client
 
-j1_client = j1.J1Client(
+j1_client = J1Client(
         account='j1dev',
         access_token='123token'
         )

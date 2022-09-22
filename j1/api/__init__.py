@@ -1,5 +1,5 @@
 __all__ = [
-    # 'api_client',
-    # 'entity',
-    # 'relationship',
+    'api_client',
+    'entity',
+    'relationship',
 ]

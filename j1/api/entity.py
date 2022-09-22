@@ -29,7 +29,7 @@ class Entity(ApiClient):
         if response:
             return response['data']['createEntity']
         else:
-            return None
+            return {}
 
     
     def update(self, entity_id: str, properties: Dict):
@@ -46,7 +46,7 @@ class Entity(ApiClient):
         if response:
             return response['data']['updateEntity']
         else:
-            return None
+            return {}
 
     def delete(self, entity_id: str, hard_delete: bool = True):
         variables = {
@@ -64,7 +64,7 @@ class Entity(ApiClient):
         if response:
             return response['data']['deleteEntity']
         else:
-            return None
+            return {}
 
     def upsert_raw_data(self):
         return
