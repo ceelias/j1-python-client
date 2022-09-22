@@ -1,5 +1,5 @@
 from .api_client import ApiClient
-from typing import Dict, List
+from typing import Dict
 
 from .queries import (
     CREATE_ENTITY,
@@ -8,38 +8,31 @@ from .queries import (
 )
     
 class Entity(ApiClient):
-    def __init__(self, config, call_back=None):
+    def __init__(self, config):
         super(Entity, self).__init__(config)
   
     def create(self,
-               entity_key: str = None,
-               entity_type: str = None,
-               entity_class: str = None,
-               timestamp: int=None,
-               properties: Dict = None):
+               entity_key: str,
+               entity_type: str,
+               entity_class: str,):
         variables = {
             'entityKey': entity_key,
             'entityType': entity_type,
             'entityClass': entity_class
         }
 
-        timestamp: int = timestamp
-        properties: Dict = properties
-
-        if timestamp:
-            variables.update(timestamp=timestamp)
-        if properties:
-            variables.update(properties=properties)
-
         response = self.execute_query(
             self.config.get_query_endpont(),
             query=CREATE_ENTITY,
             variables=variables
         )
-        return response['data']['createEntity']
+        if response:
+            return response['data']['createEntity']
+        else:
+            return {}
 
     
-    def update(self, entity_id: str = None, properties: Dict = None) -> Dict:
+    def update(self, entity_id: str, properties: Dict):
         variables = {
             'entityId': entity_id,
             'properties': properties
@@ -49,9 +42,13 @@ class Entity(ApiClient):
                         UPDATE_ENTITY,
                         variables=variables
                         )
-        return response['data']['updateEntity']
 
-    def delete(self, entity_id: str = None, hard_delete: bool = True):
+        if response:
+            return response['data']['updateEntity']
+        else:
+            return {}
+
+    def delete(self, entity_id: str, hard_delete: bool = True):
         variables = {
             'entityId': entity_id,
             'hardDelete': hard_delete
@@ -63,7 +60,11 @@ class Entity(ApiClient):
                     )
         print("WOMBAT: ")
         print(response)
-        return response['data']['deleteEntity']
+
+        if response:
+            return response['data']['deleteEntity']
+        else:
+            return {}
 
     def upsert_raw_data(self):
         return

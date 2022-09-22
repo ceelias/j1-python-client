@@ -7,7 +7,6 @@ from j1.api.queries import (
 )
     
 class Relationship(ApiClient): 
-    
     def create(self,
                relationship_key: str,
                relationship_type: str,
@@ -22,17 +21,15 @@ class Relationship(ApiClient):
             'toEntityId': to_entity_id
         }
 
-        properties = kwargs.pop('properties', None)
-        if properties:
-            variables['properties'] = properties
-
-        response = self._execute_query(
+        response = self.execute_query(
+            self.config.get_query_endpont(),
             query=CREATE_RELATIONSHIP,
             variables=variables
         )
-        return response['data']['createRelationship']
+        if response:
+            return response['data']['createRelationship']
 
-    def delete(self, relationship_id: str = None):
+    def delete(self, relationship_id: str):
         """ Deletes a relationship between two entities.
 
         args:
@@ -42,8 +39,11 @@ class Relationship(ApiClient):
             'relationshipId': relationship_id
         }
 
-        response = self._execute_query(
+        response = self.execute_query(
+            self.config.get_query_endpont(),
             DELETE_RELATIONSHIP,
             variables=variables
         )
-        return response['data']['deleteRelationship']
+
+        if response:
+            return response['data']['deleteRelationship']

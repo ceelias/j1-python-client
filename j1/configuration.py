@@ -6,10 +6,6 @@ class Configuration(object):
     """
 
     @property
-    def query_client(self):
-        return self._query_client
-
-    @property
     def account(self):
         """ Your JupiterOne account ID """
         if not self._account:
@@ -42,9 +38,6 @@ class Configuration(object):
         # The OAuth 2.0 Access Token to use for API requests.
         self._access_token = access_token
 
-
-    # def create_query_client(self):
-    #     return QueryClient(retry_methods=self.retry_methods)
 
     # All the environments the SDK can run in
     environments = {

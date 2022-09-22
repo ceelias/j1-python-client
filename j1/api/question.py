@@ -14,7 +14,6 @@ class Question(ApiClient):
     def create(self):
         return
 
-    
     def update(self):
         return
 
